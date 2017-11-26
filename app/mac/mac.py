@@ -6,6 +6,8 @@ import sys
 import time
 import random
 import string
+
+from yowsup.layers.protocol_groups.protocolentities      import *
 from yowsup.layers.protocol_presence.protocolentities import *
 from yowsup.layers.protocol_chatstate.protocolentities import *
 from yowsup.layers.protocol_media.protocolentities import *
@@ -15,8 +17,11 @@ from yowsup.common.optionalmodules import PILOptionalModule, AxolotlOptionalModu
 from yowsup.layers.protocol_profiles.protocolentities import *
 from yowsup.layers.protocol_contacts.protocolentities import *
 
+from pprint import  pprint
 from app.utils import helper
 from app.utils import media_decrypter
+
+
 
 # Globar entity
 entity = None
@@ -152,7 +157,7 @@ def send_image(path, conversation, caption=None):
         media_send(entity, conversation, path, RequestUploadIqProtocolEntity.MEDIA_TYPE_IMAGE, caption)
     else:
         print("Image doesn't exists")
-        
+
 
 def send_image_to(path, phone_number, caption=None):
     jid = Jid.normalize(phone_number)
@@ -248,6 +253,12 @@ def contact_status(jids, fn=None):
 def contact_status_from(number, fn=None):
     jid = Jid.normalize(number)
     contact_status(jid, fn)
+
+def create_group(number, jids=None):
+    def success(result, original):
+        pprint(result)
+    iq = CreateGroupsIqProtocolEntity("YUhuu", participants=[Jid.normalize(number)])
+    entity._sendIq(iq, success)
 
 
 '''

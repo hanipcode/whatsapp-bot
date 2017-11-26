@@ -20,6 +20,7 @@ def hi(message):
     who_name = message.who_name
     answer = "Hi " + who_name
     mac.send_message(answer, message.conversation)
+    mac.send_message(message.who, message.conversation)
     
 def help(message):
     answer = "*Bot called mac* \nWhatsapp framework made in Python \n*Version:* 1.0.0 \n*Status:* Beta \nhttps://github.com/danielcardeenas/whatsapp-framework"

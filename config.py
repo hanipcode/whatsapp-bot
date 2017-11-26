@@ -1,6 +1,6 @@
 credentials = dict(
-    phone = 'YOUR_PHONE',
-    password = 'YOUR_PASWWORD',
+    phone = '62895345380944',
+    password = 'RjfOEgMfzVaNNHifM1u8wil3ar0=',
 )
 
 # Your contacts numbers (Framework will sync)
