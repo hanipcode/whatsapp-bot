@@ -254,12 +254,39 @@ def contact_status_from(number, fn=None):
     jid = Jid.normalize(number)
     contact_status(jid, fn)
 
-def create_group(number, jids=None):
+def create_group(number, subject, conversation, jids=None, callback=None):
     def success(result, original):
-        pprint(result)
-    iq = CreateGroupsIqProtocolEntity("YUhuu", participants=[Jid.normalize(number)])
+        print(vars(result))
+        group_conversation = '{}@{}'.format(result.groupId, result._from)
+        if(callback):
+            callback(result.groupId, subject, number, group_conversation)
+            promote_user_to_admin(result.groupId, number)
+    iq = CreateGroupsIqProtocolEntity(subject, participants=[Jid.normalize(number)])
     entity._sendIq(iq, success)
 
+def promote_user_to_admin(groupId, number):
+    def success(result, original):
+        print("Promoted to admin")
+        print(vars(result))
+    iq = PromoteParticipantsIqProtocolEntity(Jid.normalize(groupId), [Jid.normalize(number)])
+    entity._sendIq(iq, success)
+
+
+def get_group_info(groupId, senderId, callback=None):
+    def success(result, original):
+        isAdmin = is_user_admin(senderId, result.participants)
+        if(callback):
+            callback(isAdmin)
+        print(vars(result))
+    iq = InfoGroupsIqProtocolEntity(Jid.normalize(groupId))
+    entity._sendIq(iq, success)
+
+def is_user_admin(userId, participants):
+    if not participants[userId]:
+        return False
+    if participants[userId] != 'admin':
+        return False
+    return True
 
 '''
 Callbacks. Do not touch

@@ -140,7 +140,7 @@ Detects if the message is a command for Mac
 """
 def is_command(message):
     macShorcut = message[:1]
-    return macShorcut == "!"
+    return macShorcut == "#"
 
 
 """
